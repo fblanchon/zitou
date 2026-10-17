@@ -1,3 +1,1 @@
-# CLAUDE.md
-
-@AGENTS.md
+vendor/fblanchon/zitou-core/.claude/client_template/CLAUDE.md

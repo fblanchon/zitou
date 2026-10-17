@@ -1,0 +1,5 @@
+{# Theme of zitou.fr: the engine's layout, marked with the theme's class so its own styles can follow.
+   A template absent from this folder comes from the engine; the home page is a publication chosen in the admin. #}
+{% extends '@ZitouTheme/layout.html.twig' %}
+
+{% block body_class %}{{ parent() }} zitou-theme-zitou{% endblock %}

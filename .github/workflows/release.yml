@@ -1,0 +1,53 @@
+name: Release
+
+# Every merge into main publishes a version of the site (fiche 35), deployed in production by
+# "make deploy-latest". A site keeps no CHANGELOG: its number comes from the conventional commits since
+# the last tag. A breaking change ("feat!:", "BREAKING CHANGE") raises the first figure, a "feat:" the
+# second, anything else the third. The first version is the repository variable FIRST_VERSION, or 0.1.0.
+on:
+    push:
+        branches: [main]
+
+permissions:
+    contents: write
+
+concurrency:
+    group: release
+    cancel-in-progress: false
+
+jobs:
+    release:
+        name: Publier la version
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+              with:
+                  fetch-depth: 0
+            - name: Calculer le numéro et publier
+              env:
+                  GH_TOKEN: ${{ github.token }}
+                  FIRST_VERSION: ${{ vars.FIRST_VERSION || '0.1.0' }}
+              run: |
+                  last=$(git tag --merged HEAD --list 'v[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
+                  if [ -z "$last" ]; then
+                      next="$FIRST_VERSION"
+                      range=HEAD
+                  else
+                      if [ "$(git rev-list -n 1 "$last")" = "$(git rev-parse HEAD)" ]; then
+                          echo "::notice::$last porte déjà ce commit : rien à publier."
+                          exit 0
+                      fi
+                      range="$last..HEAD"
+                      messages=$(git log --format='%s%n%b' "$range")
+                      IFS=. read -r major minor patch <<< "${last#v}"
+                      if printf '%s\n' "$messages" | grep -Eq '^[a-z]+(\([^)]*\))?!:|^BREAKING[ -]CHANGE'; then
+                          next="$((major + 1)).0.0"
+                      elif printf '%s\n' "$messages" | grep -Eq '^feat(\([^)]*\))?:'; then
+                          next="$major.$((minor + 1)).0"
+                      else
+                          next="$major.$minor.$((patch + 1))"
+                      fi
+                  fi
+                  git log --format='- %s' "$range" --no-merges > notes.md
+                  gh release create "v$next" --target "$GITHUB_SHA" --title "v$next" --notes-file notes.md
+                  echo "::notice::Version v$next publiée."
