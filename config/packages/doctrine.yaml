@@ -1,25 +1,15 @@
+# Connection and the site's own entity substitutions: entity mappings, the engine's resolve_target_entities and its
+# migrations path are prepended by ZitouBundle, which also maps the entities of the site's modules (src/Module/*/*/Entity).
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '16'
-
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore
-        identity_generation_preferences:
-            Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
-        auto_mapping: true
-        mappings:
-            App:
-                type: attribute
-                is_bundle: false
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+        auto_mapping: false
+        # The site's own entities that replace the engine's go under resolve_target_entities
+        # (docs/zitou-client/etendre-une-entite.md).
 
 when@test:
     doctrine:

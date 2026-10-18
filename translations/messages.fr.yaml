@@ -1,0 +1,3 @@
+# Textes propres au site ; à clé égale, ils l'emportent sur ceux du moteur.
+site:
+    name: zitou

@@ -1,0 +1,10 @@
+# Settings and commands of this site only. "make sync-makefile" replaces the Makefile, never this file.
+
+# Production (fiche 36): the SSH host and the folder of the site on the server, for "make deploy" from the PC;
+# the systemd service of the worker and the PHP-FPM service, stopped, reloaded and checked by "make deploy-prod".
+DEPLOY_HOST := monvps
+DEPLOY_PATH := /var/www/zitou
+WORKER_SERVICE := zitou-worker-zitou
+PHP_FPM_SERVICE := php8.4-fpm
+
+# Commands of the site go below, with "## " and a sentence to show them in "make help".
