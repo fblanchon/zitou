@@ -46,4 +46,4 @@ Le site se déploie sur un tag, jamais sur une branche : chaque fusion dans `mai
 
 - Thème : `templates/Frontend/themes/zitou/`, à créer puis activer dans Configuration › Thèmes avec l'identifiant `zitou`. La page d'accueil est une publication choisie dans Contenus.
 - Production : le site vit dans `/var/www/zitou` sur le VPS (`monvps`) ; `make deploy` depuis le PC lance `make deploy-latest` sur le serveur. Le worker tourne sous le service systemd `zitou-worker-zitou` (réglages dans `Makefile.local`).
-- Première version sur le moteur : `v1.0.0` (variable de dépôt `FIRST_VERSION`).
+- Première version sur le moteur : `v1.0.0`, par la variable de dépôt `FIRST_VERSION` = `1.0.0` (sans « v », le workflow l’ajoute).
