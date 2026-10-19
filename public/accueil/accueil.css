@@ -1,0 +1,415 @@
+/* Home page of zitou.fr (templates/home/index.html.twig), scoped to .zitou-home. Light by default, dark when the
+   visitor's system prefers it. Fonts are served by the site itself: Fraunces, Figtree and Caveat (SIL Open Font
+   License, licences in polices/). */
+@font-face {
+    font-family: "Fraunces";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url("polices/fraunces-latin-full-normal.woff2") format("woff2-variations");
+}
+@font-face {
+    font-family: "Fraunces";
+    font-style: italic;
+    font-display: swap;
+    font-weight: 100 900;
+    src: url("polices/fraunces-latin-full-italic.woff2") format("woff2-variations");
+}
+@font-face {
+    font-family: "Figtree";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300 900;
+    src: url("polices/figtree-latin-wght-normal.woff2") format("woff2-variations");
+}
+@font-face {
+    font-family: "Caveat";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 600;
+    src: url("polices/caveat-latin-600-normal.woff2") format("woff2");
+}
+.zitou-home {
+    --sky-top: #AEDDFF;
+    --sky-bottom: #E9F6FF;
+    --ground: #F6FAFF;
+    --hill: #8EE0C8;
+    --ink: #1B2550;
+    --ink-soft: #46527D;
+    --line: #D3DFF2;
+    --accent-ink: #C8246A;
+    --sticker: #1B2550;
+    --sun: #FFC83D;
+    --tangerine: #FF7A3D;
+    --bubble: #FF4F98;
+    --mint: #17C29F;
+    --blue: #3E7BFA;
+    --on-color: #1B2550;
+    --orb: #FFC83D;
+    --orb-high: #FFE79A;
+    --orb-ring: rgba(255, 200, 61, 0.28);
+    --rays: 1;
+    --craters: 0;
+    --stars: 0;
+    --eye: #FFFFFF;
+    --pupil: #1B2550;
+    --blush: #FF8FB8;
+    --paper: #FFFDF6;
+    --font-display: "Fraunces", "Georgia", "Times New Roman", serif;
+    --font-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-hand: "Caveat", "Segoe Print", "Comic Sans MS", cursive;
+}
+@media (prefers-color-scheme: dark) {
+    .zitou-home {
+        --sky-top: #0B1030; --sky-bottom: #1B2457; --ground: #11173A; --hill: #1D5B62;
+        --ink: #F2F3FF; --ink-soft: #B7BFE8; --line: #2B3570; --accent-ink: #FF8EC1; --sticker: #04071A;
+        --orb: #F1EED6; --orb-high: #FFFFFF; --orb-ring: rgba(241, 238, 214, 0.08);
+        --rays: 0; --craters: 1; --stars: 1; --blush: #FF6FA8; --paper: #F3EFE2;
+        color-scheme: dark;
+    }
+}
+body { margin: 0; }
+.zitou-home, .zitou-home *, .zitou-home *::before, .zitou-home *::after { box-sizing: border-box; }
+.zitou-home {
+    min-height: 100vh;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+}
+.zitou-home a { color: inherit; }
+.zitou-home :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+.zitou-home .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+}
+.zitou-home .wrap {
+    width: 100%;
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.zitou-home .sky {
+    position: relative;
+    overflow: clip;
+    background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+    padding-block: clamp(2.5rem, 7vw, 5.5rem) 0;
+}
+.zitou-home .sky > .wrap { position: relative; z-index: 3; }
+.zitou-home .orb {
+    position: absolute;
+    z-index: 1;
+    top: clamp(-7rem, -8vw, -3rem);
+    right: clamp(-7rem, -6vw, -3rem);
+    width: clamp(13rem, 36vw, 27rem);
+    aspect-ratio: 1;
+    max-width: 100%;
+}
+.zitou-home .orb-rays {
+    position: absolute; inset: -32%;
+    border-radius: 50%;
+    background: repeating-conic-gradient(from 0deg, var(--orb-ring) 0deg 9deg, transparent 9deg 22.5deg);
+    opacity: var(--rays);
+    animation: zitou-home-spin 80s linear infinite;
+    -webkit-mask: radial-gradient(circle, #000 30%, transparent 70%);
+    mask: radial-gradient(circle, #000 30%, transparent 70%);
+}
+.zitou-home .orb-disc {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 36%, var(--orb-high), var(--orb) 62%);
+    box-shadow: 0 0 0 1.6rem var(--orb-ring), 0 0 0 3.4rem var(--orb-ring);
+}
+.zitou-home .crater {
+    position: absolute; border-radius: 50%;
+    background: var(--orb-ring);
+    box-shadow: inset 0.25rem 0.25rem 0 rgba(0, 0, 0, 0.06);
+    opacity: var(--craters);
+}
+.zitou-home .crater:nth-child(2) { width: 18%; height: 18%; left: 28%; top: 50%; }
+.zitou-home .crater:nth-child(3) { width: 11%; height: 11%; left: 55%; top: 30%; }
+.zitou-home .crater:nth-child(4) { width: 8%; height: 8%; left: 50%; top: 66%; }
+@keyframes zitou-home-spin { to { transform: rotate(360deg); } }
+.zitou-home .stars { position: absolute; inset: 0; z-index: 0; opacity: var(--stars); pointer-events: none; }
+.zitou-home .star {
+    position: absolute; width: 3px; height: 3px; border-radius: 50%;
+    background: var(--orb-high);
+    animation: zitou-home-twinkle 3s ease-in-out infinite alternate;
+}
+@keyframes zitou-home-twinkle { from { opacity: 0.25; } to { opacity: 1; } }
+.zitou-home .floaties { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.zitou-home .floaty {
+    position: absolute;
+    left: var(--x); top: var(--y); width: var(--w);
+    transform: translate(calc(var(--px, 0) * var(--d) * 1px), calc(var(--py, 0) * var(--d) * 1px));
+    transition: transform 0.6s cubic-bezier(.2, .8, .2, 1);
+}
+.zitou-home .floaty svg {
+    display: block; width: 100%; height: auto; overflow: visible;
+    animation: zitou-home-bob var(--t, 7s) ease-in-out infinite alternate;
+    animation-delay: var(--delay, 0s);
+}
+@keyframes zitou-home-bob {
+    from { transform: translateY(-6px) rotate(-8deg); }
+    to { transform: translateY(8px) rotate(10deg); }
+}
+.zitou-home .greeting {
+    font-family: var(--font-hand);
+    font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+    line-height: 1.1;
+    color: var(--accent-ink);
+    margin: 0;
+    transform: rotate(-2deg);
+    transform-origin: left center;
+}
+.zitou-home .wordmark {
+    margin: clamp(2.2rem, 4vw, 3rem) 0 0;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-variation-settings: "SOFT" 100, "WONK" 1;
+    font-optical-sizing: auto;
+    font-size: clamp(5rem, 28vw, 14.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+}
+.zitou-home .letters { display: inline-flex; align-items: baseline; margin-left: -0.04em; user-select: none; }
+.zitou-home .letter {
+    display: inline-block;
+    color: var(--c);
+    text-shadow: 0.035em 0.045em 0 var(--sticker);
+    transform-origin: 50% 100%;
+    animation: zitou-home-drop 0.9s cubic-bezier(.34, 1.56, .64, 1) both;
+    animation-delay: calc(var(--i) * 90ms + 120ms);
+}
+.zitou-home .letter.jump { animation: zitou-home-jump 0.65s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes zitou-home-drop {
+    from { transform: translateY(-0.45em) scale(0.85, 1.1); }
+    to { transform: none; }
+}
+@keyframes zitou-home-jump {
+    0% { transform: none; }
+    18% { transform: scale(1.12, 0.84); }
+    48% { transform: translateY(-0.2em) scale(0.92, 1.1) rotate(-4deg); }
+    78% { transform: translateY(0) scale(1.06, 0.95); }
+    100% { transform: none; }
+}
+.zitou-home .face {
+    position: relative;
+    width: 0.56em; height: 0.56em;
+    margin-inline: 0.035em 0.02em;
+    border-radius: 50%;
+    background: var(--mint);
+    box-shadow: 0.035em 0.045em 0 var(--sticker);
+    cursor: pointer;
+    text-shadow: none;
+}
+.zitou-home .eye {
+    position: absolute; top: 27%;
+    width: 22%; height: 27%;
+    border-radius: 50%;
+    background: var(--eye);
+    transition: transform 0.12s ease;
+}
+.zitou-home .eye.left { left: 21%; }
+.zitou-home .eye.right { right: 21%; }
+.zitou-home .pupil {
+    position: absolute; left: 22%; top: 22%;
+    width: 56%; height: 56%;
+    border-radius: 50%;
+    background: var(--pupil);
+}
+.zitou-home .face.blink .eye { transform: scaleY(0.1); }
+.zitou-home .face.happy .eye { transform: translateY(18%) scaleY(0.32); }
+.zitou-home .cheek {
+    position: absolute; top: 57%;
+    width: 17%; height: 10%;
+    border-radius: 50%;
+    background: var(--blush);
+    opacity: 0.85;
+    transition: transform 0.3s ease;
+}
+.zitou-home .cheek.left { left: 7%; }
+.zitou-home .cheek.right { right: 7%; }
+.zitou-home .face.happy .cheek { transform: scale(1.3); }
+.zitou-home .mouth { position: absolute; left: 27%; top: 58%; width: 46%; overflow: visible; }
+.zitou-home .mouth path { transition: opacity 0.2s ease; }
+.zitou-home .mouth .grin { opacity: 0; }
+.zitou-home .face.happy .mouth .smile { opacity: 0; }
+.zitou-home .face.happy .mouth .grin { opacity: 1; }
+.zitou-home .psst {
+    position: absolute;
+    bottom: calc(100% + 0.15rem);
+    left: 35%;
+    display: flex; align-items: flex-end; gap: 0.1rem;
+    font-family: var(--font-hand);
+    font-weight: 600;
+    font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--accent-ink);
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.zitou-home .psst > span { transform: rotate(-6deg); display: inline-block; padding-bottom: 0.5em; }
+.zitou-home .psst svg { width: 1.6em; height: 1.6em; order: -1; transform: scaleX(-1); }
+.zitou-home .psst.gone { opacity: 0; transform: translateY(-0.5rem); }
+.zitou-home .psst .touch-only { display: none; }
+@media (hover: none) {
+    .zitou-home .psst .touch-only { display: inline; }
+    .zitou-home .psst .mouse-only { display: none; }
+}
+.zitou-home .lede {
+    margin: clamp(1.2rem, 2.5vw, 1.8rem) 0 0;
+    max-width: 21ch;
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100, "WONK" 0;
+    font-weight: 700;
+    font-size: clamp(1.55rem, 3.4vw, 2.4rem);
+    line-height: 1.15;
+    text-wrap: balance;
+}
+.zitou-home .lede em { font-style: italic; color: var(--accent-ink); }
+.zitou-home .intro {
+    margin: 1rem 0 0;
+    max-width: 50ch;
+    color: var(--ink-soft);
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+}
+.zitou-home .actions {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 1rem 1.6rem;
+    margin-top: 2rem;
+}
+.zitou-home .button {
+    appearance: none;
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.85rem 1.4rem;
+    border: 2px solid var(--on-color);
+    border-radius: 999px;
+    background: var(--sun);
+    color: var(--on-color);
+    font: 800 1.05rem/1 var(--font-body);
+    box-shadow: 0.25rem 0.3rem 0 var(--sticker);
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.zitou-home .button:hover { transform: translate(-1px, -2px) rotate(-1deg); box-shadow: 0.35rem 0.45rem 0 var(--sticker); }
+.zitou-home .button:active { transform: translate(0.2rem, 0.25rem); box-shadow: 0 0 0 var(--sticker); }
+.zitou-home .button svg { width: 1.3rem; height: 1.3rem; }
+.zitou-home .link-down {
+    font-weight: 600;
+    text-decoration: underline wavy var(--bubble);
+    text-underline-offset: 0.35em;
+    text-decoration-thickness: 2px;
+}
+.zitou-home .link-down:hover { color: var(--accent-ink); }
+.zitou-home .horizon { position: relative; z-index: 2; display: block; width: 100%; height: clamp(70px, 9vw, 130px); margin-top: clamp(2.5rem, 6vw, 4.5rem); }
+.zitou-home .horizon .back { fill: var(--hill); }
+.zitou-home .horizon .front { fill: var(--ground); }
+.zitou-home .daily { overflow-x: clip; padding-block: clamp(1rem, 3vw, 2rem) clamp(3.5rem, 8vw, 6rem); }
+.zitou-home .joy-stack { display: grid; max-width: 30rem; margin-inline: auto; }
+.zitou-home .polaroid {
+    position: relative;
+    z-index: 2;
+    width: min(16.5rem, 66%);
+    margin: 0 0 -1.1rem 7%;
+    padding: 0.8rem 0.8rem 0;
+    background: var(--paper);
+    border: 2px solid var(--on-color);
+    border-radius: 0.25rem;
+    box-shadow: 0.45rem 0.55rem 0 var(--sticker);
+    transform: rotate(3deg);
+    transition: transform 0.35s cubic-bezier(.34, 1.56, .64, 1);
+}
+.zitou-home .polaroid.swap { transform: rotate(-4deg) scale(0.96); }
+.zitou-home .tape {
+    position: absolute; top: -0.85rem; left: 50%;
+    width: 5.6rem; height: 1.7rem;
+    background: color-mix(in srgb, var(--bubble) 62%, transparent);
+    transform: translateX(-50%) rotate(-5deg);
+}
+.zitou-home .polaroid img {
+    display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover;
+    background: var(--line);
+    transition: opacity 0.22s ease;
+}
+.zitou-home .polaroid.swap img, .zitou-home .polaroid.swap figcaption { opacity: 0; }
+.zitou-home .polaroid figcaption {
+    padding: 0.35rem 0 0.55rem;
+    font-family: var(--font-hand);
+    font-weight: 600;
+    font-size: 1.55rem;
+    line-height: 1.15;
+    text-align: center;
+    color: var(--on-color);
+    transition: opacity 0.22s ease;
+}
+@media (min-width: 821px) {
+    .zitou-home .joy-stack { max-width: 60rem; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; }
+    .zitou-home .joy-stack .polaroid { justify-self: end; width: 100%; max-width: 20rem; margin: 0 -2.4rem 0 0; transform: rotate(-4deg); }
+    .zitou-home .joy-stack .polaroid.swap { transform: rotate(3deg) scale(0.96); }
+    .zitou-home .joy-stack .joy { padding-left: calc(clamp(1.6rem, 3.5vw, 2.4rem) + 2.4rem); }
+}
+.zitou-home .joy {
+    position: relative;
+    margin-top: 0.5rem;
+    padding: clamp(1.6rem, 3.5vw, 2.4rem);
+    border: 2px solid var(--on-color);
+    border-radius: 1.6rem 1.6rem 1.6rem 0.4rem;
+    background: var(--sun);
+    color: var(--on-color);
+    box-shadow: 0.5rem 0.6rem 0 var(--sticker);
+    transform: rotate(-1.5deg);
+}
+.zitou-home .joy-label {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+.zitou-home .joy-date { margin: 0.1rem 0 0; font-family: var(--font-hand); font-size: 1.5rem; line-height: 1.2; }
+.zitou-home .joy-quote {
+    margin: 1.1rem 0 1.6rem;
+    min-height: 4.6em;
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 100, "WONK" 1;
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+    line-height: 1.22;
+    text-wrap: balance;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.zitou-home .joy-quote.out { opacity: 0; transform: translateY(0.5rem) rotate(1deg); }
+.zitou-home .joy .button { background: var(--on-color); color: var(--sun); border-color: var(--on-color); box-shadow: 0.25rem 0.3rem 0 var(--bubble); }
+.zitou-home .joy .button:hover { box-shadow: 0.35rem 0.45rem 0 var(--bubble); }
+.zitou-home .joy .button:active { box-shadow: 0 0 0 var(--bubble); }
+.zitou-home .joy-sticker {
+    position: absolute; top: -1.6rem; right: -0.8rem;
+    width: 4.4rem; height: 4.4rem;
+    transform: rotate(14deg);
+}
+.zitou-home .end {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.6rem 2rem;
+    padding-block: 0 2.2rem;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+}
+.zitou-home .goodbye { margin: 0; font-family: var(--font-hand); font-size: 1.4rem; line-height: 1.2; color: var(--accent-ink); }
+.zitou-home .thanks summary { cursor: pointer; width: fit-content; }
+.zitou-home .thanks summary:hover { color: var(--ink); }
+.zitou-home .thanks ul { margin: 0.6rem 0 0; padding: 0; list-style: none; columns: 15rem auto; column-gap: 2rem; }
+.zitou-home .thanks li { break-inside: avoid; padding-block: 0.1rem; }
+.zitou-home .thanks a { text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 0.2em; }
+.zitou-home .thanks a:hover { color: var(--accent-ink); }
+.zitou-home .zitou-home-confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
+@media (max-width: 640px) {
+    .zitou-home .floaty.optional { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .zitou-home *, .zitou-home *::before, .zitou-home *::after { animation: none !important; transition: none !important; }
+}
