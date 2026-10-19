@@ -9,7 +9,7 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "fblanchon/zitou-core": "^0.1",
+        "fblanchon/zitou-core": "^0.2",
         "symfony/console": "7.4.*",
         "symfony/dotenv": "7.4.*",
         "symfony/flex": "^2",
