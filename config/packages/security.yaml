@@ -7,6 +7,8 @@ security:
     providers:
         zitou_admin_accounts:
             id: Zitou\Core\Security\AdminUserProvider
+        zitou_public_accounts:
+            id: Zitou\Core\Security\PublicUserProvider
 
     # A developer is also an administrator, who is also a user (fiche 11).
     role_hierarchy:
@@ -46,14 +48,36 @@ security:
                 target: zitou_platform_auth_login
                 enable_csrf: true
                 csrf_token_id: logout
+                # The public site signs in through the same browser session: leaving one never leaves the other.
+                invalidate_session: false
 
-        # The public site has its own session; its accounts arrive at step 7.
+        # The public site has its own sign-in (fiche 42): its accounts only, its own remember-me cookie. The accounts
+        # stay off, and the sign-in answers nothing, until a developer turns them on.
         public:
             lazy: true
+            provider: zitou_public_accounts
+            user_checker: Zitou\Core\Security\UserChecker
+            custom_authenticators:
+                - Zitou\Module\Platform\Account\Security\PublicLoginAuthenticator
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
+            remember_me:
+                secret: '%kernel.secret%'
+                name: ZITOU_REMEMBER_ME
+                lifetime: 2592000
+                path: /
+                samesite: lax
+            logout:
+                path: zitou_platform_account_logout
+                target: zitou_home
+                enable_csrf: true
+                csrf_token_id: logout
+                invalidate_session: false
 
     # Only the first matching rule applies.
     access_control:
-        - { path: ^/suite/platform/(login|logout|password|invitation)(/|$), roles: PUBLIC_ACCESS }
+        - { path: ^/suite/platform/(login|logout|password|invitation|access-request|register)(/|$), roles: PUBLIC_ACCESS }
         - { path: ^/uploads/, roles: PUBLIC_ACCESS }
         - { path: ^/dev(/|$), roles: ROLE_DEV }
         - { path: ^/suite(/|$), roles: ROLE_USER }

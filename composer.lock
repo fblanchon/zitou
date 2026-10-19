@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "945081fefed02145c0e1041d1dede5e9",
+    "content-hash": "7f76476945a3baee8f59182c720f539a",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -1192,11 +1192,11 @@
         },
         {
             "name": "fblanchon/zitou-core",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:fblanchon/zitou-core.git",
-                "reference": "0b81f59cc7cab50890429c4867e22367b07046a9"
+                "reference": "a45c2c5bbbab1e34660f8aad89c35ceeaa1313a0"
             },
             "require": {
                 "doctrine/dbal": "^4.3",
@@ -1271,7 +1271,7 @@
                 "proprietary"
             ],
             "description": "zitou engine: Symfony bundle shared by every zitou site.",
-            "time": "2026-10-17T13:40:09+00:00"
+            "time": "2026-10-19T04:34:43+00:00"
         },
         {
             "name": "league/uri",

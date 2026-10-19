@@ -25,11 +25,16 @@ PHP_FPM_SERVICE ?=
 PACK_PORT ?= 8100
 
 ## —— Démarrer ——
-setup-env: ## Crée .env.local avec un secret d'application neuf (ne touche pas à un .env.local existant)
-	@if [ -f .env.local ]; then echo ".env.local existe déjà : rien à faire."; exit 0; fi; \
+setup-env: ## Crée .env.local avec un secret d'application et une clé de chiffrement neufs (ne touche pas à un .env.local existant)
+	@if [ -f .env.local ]; then \
+		echo ".env.local existe déjà : rien à faire."; \
+		grep -qs '^ZITOU_ENCRYPTION_KEY=.' .env.local || echo "Il n'a pas de clé de chiffrement : php bin/console zitou:encryption:key en donne une à y ajouter."; \
+		exit 0; \
+	fi; \
 	secret=$$(php -r 'echo bin2hex(random_bytes(16));'); \
-	printf '%s\n' "# Settings of this machine, never committed. Production secrets go here too." "APP_SECRET=$$secret" "# DATABASE_URL=\"postgresql://app:app@127.0.0.1:5432/<base>?serverVersion=16&charset=utf8\"" > .env.local; \
-	echo ".env.local créé : relire DATABASE_URL dans .env et, si besoin, la redéfinir ici."
+	key=$$(php -r 'echo base64_encode(random_bytes(32));'); \
+	printf '%s\n' "# Settings of this machine, never committed. Production secrets go here too." "APP_SECRET=$$secret" "# Key of the encrypted settings: keep it in the password manager, losing it loses them." "ZITOU_ENCRYPTION_KEY=$$key" "# DATABASE_URL=\"postgresql://app:app@127.0.0.1:5432/<base>?serverVersion=16&charset=utf8\"" > .env.local; \
+	echo ".env.local créé : relire DATABASE_URL dans .env et, si besoin, la redéfinir ici. Garder ZITOU_ENCRYPTION_KEY dans le gestionnaire de mots de passe."
 
 install: ## Installe le site, les dépendances internes du moteur et ses outils de qualité
 	composer install
@@ -239,7 +244,7 @@ ft: ## Avant chaque commit : style, analyse, schéma, build, tests
 
 ## —— Production ——
 install-prod: ## Première installation sur le serveur : dépendances, base créée depuis le schéma, build, vérification
-	@test -f .env.local || (echo ".env.local manque : APP_ENV=prod, APP_SECRET, DATABASE_URL, MAILER_DSN… (fiche 36)" && exit 1)
+	@test -f .env.local || (echo ".env.local manque : APP_ENV=prod, APP_SECRET, ZITOU_ENCRYPTION_KEY, DATABASE_URL, MAILER_DSN… (fiche 36)" && exit 1)
 	composer install --no-dev --optimize-autoloader --no-interaction
 	$(MAKE) engine-deps
 	mkdir -p var/uploads var/share
