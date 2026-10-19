@@ -1,6 +1,6 @@
-# The site's own migrations. The engine's (namespace Zitou\Migrations) are declared by ZitouBundle,
-# and both run in date order.
 doctrine_migrations:
     migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
     enable_profiler: false

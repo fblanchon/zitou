@@ -1,3 +1,4 @@
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -8,20 +9,13 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-# Cache of the Twig style fixer run by make cs.
-/.twig-cs-fixer.cache
-
-# public/build is a versioned symbolic link to the engine's compiled files: never ignore it.
-
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
+###> phpunit/phpunit ###
 /phpunit.xml
 /.phpunit.cache/
-###< symfony/phpunit-bridge ###
+###< phpunit/phpunit ###
 
-# Demo packs of a client (docs/zitou-client/packs-de-demo.md): loaded locally, never versioned.
-/packs/*
-!/packs/README.md
-
-# Private notes of the owner, never versioned.
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
 /docs/private/
