@@ -1,0 +1,32 @@
+name: CI
+
+# Private repository: CI runs on pull requests and on main only, to save Actions minutes.
+on:
+    pull_request:
+    push:
+        branches: [main]
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    tests:
+        name: Tests
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.4'
+                  extensions: intl
+                  coverage: none
+
+            # Also runs the Flex scripts: cache, bundle assets and importmap packages.
+            - run: composer install --no-interaction --no-progress
+
+            - run: php bin/console lint:twig templates
+            - run: php bin/console lint:yaml config translations
+            - run: php bin/console lint:container
+            - run: php bin/phpunit
