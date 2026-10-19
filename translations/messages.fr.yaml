@@ -1,3 +1,109 @@
-# Textes propres au site ; à clé égale, ils l'emportent sur ceux du moteur.
+# Textes du site zitou.fr.
 site:
     name: zitou
+    # Page d'accueil (templates/home/index.html.twig).
+    home:
+        greeting:
+            default: "Bonjour, et bienvenue !"
+            # %weekday% is replaced in the browser by the visitor's day of the week.
+            night: "Encore debout ? Les étoiles aussi !"
+            morning: "Bonjour, et joyeux %weekday% !"
+            afternoon: "Bel après-midi, et joyeux %weekday% !"
+            evening: "Bonsoir ! Doux %weekday% à vous."
+            late: "Bonne nuit, petit oiseau de nuit !"
+        psst_mouse: "psst… cliquez-moi !"
+        psst_touch: "psst… touchez-moi !"
+        lede: "Un petit coin du web qui"
+        lede_emphasis: "fait sourire"
+        intro: "Ici poussent des sites pour la famille, les amis et les idées qui rendent la journée plus douce. Installez-vous, il fait beau."
+        confetti: "Lancer des confettis"
+        see_joy: "Voir le petit bonheur du jour"
+        joy:
+            label: "Le petit bonheur du jour"
+            today: "pour aujourd'hui"
+            # Followed in the browser by the date, for example « pour ce lundi 19 octobre ».
+            date_prefix: "pour ce"
+            next: "Un autre, s'il vous plaît"
+        goodbye: "Revenez quand vous voulez, la porte est ouverte."
+        thanks: "Merci aux photographes de Pexels"
+        thoughts:
+            crepes:
+                text: "Une crêpe ratée reste une crêpe."
+                caption: "crêpes du dimanche"
+                alt: "Des crêpes garnies de fraises et de myrtilles."
+                subject: "Les crêpes"
+            loutres:
+                text: "Les loutres de mer se tiennent la main pour dormir, pour ne pas dériver."
+                caption: "main dans la patte"
+                alt: "Deux loutres de mer qui flottent côte à côte."
+                subject: "Les loutres"
+            lune:
+                text: "Ce soir, la lune sera là. Elle n'a jamais raté un rendez-vous."
+                caption: "fidèle au rendez-vous"
+                alt: "La pleine lune dans un ciel noir."
+                subject: "La lune"
+            chocolat:
+                text: "Il reste sûrement un carré de chocolat quelque part."
+                caption: "le carré caché"
+                alt: "Des tablettes de chocolat aux noisettes sur un fond jaune."
+                subject: "Le chocolat"
+            danse-cuisine:
+                text: "Le meilleur moment pour danser dans la cuisine, c'est maintenant."
+                caption: "et un, et deux…"
+                alt: "Un homme qui danse de joie dans sa cuisine."
+                subject: "La danse"
+            chien-mer:
+                text: "Quelque part, un chien voit la mer pour la première fois."
+                caption: "premier plouf !"
+                alt: "Un chien qui court dans les vagues."
+                subject: "Le chien à la mer"
+            chat-etirement:
+                text: "Vous avez déjà survécu à tous vos lundis. Bravo."
+                caption: "lundi ? même pas peur"
+                alt: "Un chat roux qui s'étire sur une nappe à carreaux."
+                subject: "Le chat"
+            chocolat-chaud:
+                text: "Le chocolat chaud, c'est un câlin qu'on boit."
+                caption: "pluie de guimauves"
+                alt: "Une tasse de chocolat chaud sous une pluie de guimauves."
+                subject: "Le chocolat chaud"
+            arbres:
+                text: "Les arbres ne se pressent jamais, et pourtant ils arrivent tout en haut."
+                caption: "tout là-haut"
+                alt: "Deux grands arbres vus d'en bas, sur un ciel bleu."
+                subject: "Les arbres"
+            telephone:
+                text: "Aujourd'hui est un excellent jour pour appeler quelqu'un qu'on aime."
+                caption: "allô, c'est moi !"
+                alt: "Un téléphone jouet jaune au combiné rouge."
+                subject: "Le téléphone"
+            quokka:
+                text: "Sourire fait travailler les joues. C'est du sport, ça compte."
+                caption: "champion du sourire"
+                alt: "Un quokka qui a l'air de sourire."
+                subject: "Le quokka"
+            tartine:
+                text: "Une tartine sur deux tombe du bon côté. C'est déjà ça."
+                caption: "côté confiture"
+                alt: "Une tartine de confiture sur un fond bleu."
+                subject: "La tartine"
+            flaque:
+                text: "Les flaques d'eau sont des miroirs gratuits pour les nuages."
+                caption: "un miroir gratuit"
+                alt: "Un enfant qui marche dans une flaque où il se reflète."
+                subject: "La flaque"
+            amis:
+                text: "Quelqu'un, quelque part, rit en pensant à vous."
+                caption: "fou rire"
+                alt: "Trois amis qui rient ensemble."
+                subject: "Le fou rire"
+            printemps:
+                text: "Le printemps revient toujours. Il ne lit même pas le calendrier."
+                caption: "il revient toujours"
+                alt: "Des fleurs de cerisier blanches sur un ciel bleu."
+                subject: "Le printemps"
+            pique-nique:
+                text: "Un pique-nique, même dans le salon, reste un pique-nique."
+                caption: "nappe à carreaux"
+                alt: "Une famille qui pique-nique dans un parc."
+                subject: "Le pique-nique"

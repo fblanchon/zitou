@@ -12,80 +12,21 @@ concurrency:
 
 jobs:
     tests:
-        name: Installation et tests
+        name: Tests
         runs-on: ubuntu-latest
-        services:
-            # Same role and password as the DATABASE_URL of .env.
-            postgres:
-                image: postgres:16
-                env:
-                    POSTGRES_USER: app
-                    POSTGRES_PASSWORD: app
-                    POSTGRES_DB: app
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd "pg_isready -U app"
-                    --health-interval 5s
-                    --health-timeout 5s
-                    --health-retries 10
         steps:
             - uses: actions/checkout@v5
-
-            # zitou-core is private: a read-only deploy key on zitou-core, stored here as a secret.
-            - uses: webfactory/ssh-agent@v0.9.1
-              with:
-                  ssh-private-key: ${{ secrets.ZITOU_CORE_DEPLOY_KEY }}
-            # A site that requires a tagged engine gets it from Composer, over SSH with the key above.
-            # While composer.json reads the engine from ../zitou-core (path repository), as on the PC, it is
-            # cloned there: a pull request takes the engine branch of the same name when there is one, so paired
-            # changes are tested together; otherwise develop.
-            - name: Clone zitou-core (path repository only)
-              env:
-                  BRANCH: ${{ github.head_ref }}
-              run: |
-                  if ! grep -q '"type": "path"' composer.json; then
-                      echo "zitou-core comes from Composer (tagged version): nothing to clone."
-                      exit 0
-                  fi
-                  engine=git@github.com:fblanchon/zitou-core.git
-                  if [ -n "$BRANCH" ] && git ls-remote --exit-code --heads "$engine" "$BRANCH" > /dev/null; then
-                      git clone --depth 1 --branch "$BRANCH" "$engine" ../zitou-core
-                  else
-                      git clone --depth 1 --branch develop "$engine" ../zitou-core
-                  fi
-                  git -C ../zitou-core log -1 --format='zitou-core %h (%D)'
 
             - uses: shivammathur/setup-php@v2
               with:
                   php-version: '8.4'
-                  extensions: gd, intl, pdo_pgsql, sodium
+                  extensions: intl
                   coverage: none
-            - run: composer validate --strict
-            - uses: ramsey/composer-install@v3
-            # The engine build needs the engine's own vendor/ (it reads @symfony/ux-vue from it).
-            - uses: ramsey/composer-install@v3
-              with:
-                  working-directory: vendor/fblanchon/zitou-core
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  package_json_file: vendor/fblanchon/zitou-core/package.json
-            - uses: actions/setup-node@v5
-              with:
-                  node-version: '24'
-                  cache: pnpm
-                  cache-dependency-path: vendor/fblanchon/zitou-core/pnpm-lock.yaml
-            - run: pnpm install --frozen-lockfile
-              working-directory: vendor/fblanchon/zitou-core
+            # Also runs the Flex scripts: cache, bundle assets and importmap packages.
+            - run: composer install --no-interaction --no-progress
 
-            # Exports the texts, builds engine and site together, then checks the public/build link reaches the manifest.
-            - run: make build
-            # The bootstrap rebuilds the "_test" database from the entity schema before the first test.
+            - run: php bin/console lint:twig templates
+            - run: php bin/console lint:yaml config translations
+            - run: php bin/console lint:container
             - run: php bin/phpunit
-            # The migrations of the engine and the site, replayed on an empty database, must give the mapped schema.
-            - name: Migrations conformes au mapping
-              run: |
-                  php bin/console doctrine:database:create
-                  php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-                  php bin/console doctrine:schema:validate
